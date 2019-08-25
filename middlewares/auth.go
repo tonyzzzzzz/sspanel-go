@@ -19,6 +19,7 @@ func AuthMiddleWare() gin.HandlerFunc {
 		var user models.User
 		db := utils.GetMySQLInstance().Database
 		db.First(&user, claims.UserID)
+
 		if token == "" || err != nil {
 			c.Request.Header.Set("Authorization", "")
 			c.JSON(http.StatusForbidden, gin.H{"msg": "Token Invalid"})

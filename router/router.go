@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tonyzzzzzz/sspanel-go/controllers/auth"
 	"github.com/tonyzzzzzz/sspanel-go/controllers/user"
+	"github.com/tonyzzzzzz/sspanel-go/controllers/user/node"
 	"github.com/tonyzzzzzz/sspanel-go/controllers/user/shop"
 	"github.com/tonyzzzzzz/sspanel-go/middlewares"
 )

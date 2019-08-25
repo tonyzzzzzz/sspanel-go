@@ -1,9 +1,13 @@
 package models
 
+import (
+	"github.com/tonyzzzzzz/sspanel-go/utils"
+)
+
 // SsNode ORM Model
 // Written By Indexyz @ Cloudhammer/Seeds
 type SsNode struct {
-	Id                     int     `gorm:"column:id;NOT NULL;PRIMARY KEY;"`
+	ID                     int     `gorm:"column:id;NOT NULL;PRIMARY KEY;"`
 	Name                   string  `gorm:"column:name;NOT NULL;"`
 	Type                   int     `gorm:"column:type;NOT NULL;"`
 	Server                 string  `gorm:"column:server;NOT NULL;"`
@@ -20,10 +24,19 @@ type SsNode struct {
 	NodeBandwidthLimit     int64   `gorm:"column:node_bandwidth_limit;NOT NULL;"`
 	BandwidthlimitResetday int     `gorm:"column:bandwidthlimit_resetday;NOT NULL;"`
 	NodeHeartbeat          int64   `gorm:"column:node_heartbeat;NOT NULL;"`
-	NodeIp                 string  `gorm:"column:node_ip;type:text;"`
+	NodeIP                 string  `gorm:"column:node_ip;type:text;"`
 	NodeGroup              int     `gorm:"column:node_group;NOT NULL;"`
 	CustomRss              int     `gorm:"column:custom_rss;NOT NULL;"`
 	MuOnly                 int     `gorm:"column:mu_only;"`
+	OnlineUser             int
+}
+
+// GetOnlineUserCount returns the online user of specified node
+func (node *SsNode) GetOnlineUserCount() int {
+	var onlineLog SsNodeOnlineLog
+	db := utils.GetMySQLInstance().Database
+	db.Where("node_id = ?", node.ID).Last(&onlineLog)
+	return onlineLog.OnlineUser
 }
 
 func (SsNode) TableName() string {
