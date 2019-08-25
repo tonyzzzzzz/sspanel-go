@@ -28,15 +28,23 @@ type SsNode struct {
 	NodeGroup              int     `gorm:"column:node_group;NOT NULL;"`
 	CustomRss              int     `gorm:"column:custom_rss;NOT NULL;"`
 	MuOnly                 int     `gorm:"column:mu_only;"`
-	OnlineUser             int
 }
 
-// GetOnlineUserCount returns the online user of specified node
-func (node *SsNode) GetOnlineUserCount() int {
+// Node Model for RESTful API
+type Node struct {
+	SsNode
+	Online int
+}
+
+// GetNode returns the node with online user count
+func (node SsNode) GetNode() Node {
 	var onlineLog SsNodeOnlineLog
 	db := utils.GetMySQLInstance().Database
 	db.Where("node_id = ?", node.ID).Last(&onlineLog)
-	return onlineLog.OnlineUser
+	return Node{
+		node,
+		onlineLog.OnlineUser,
+	}
 }
 
 func (SsNode) TableName() string {

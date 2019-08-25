@@ -3,6 +3,8 @@ package router
 import (
 	"net/http"
 
+	"github.com/tonyzzzzzz/sspanel-go/utils"
+
 	"github.com/dvwright/xss-mw"
 	"github.com/gin-gonic/gin"
 	"github.com/tonyzzzzzz/sspanel-go/controllers/auth"
@@ -14,7 +16,9 @@ import (
 
 // GetRouter generates the router of the app
 func GetRouter() *gin.Engine {
-
+	if !utils.GetConfig().GetBool("server.debug") {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())

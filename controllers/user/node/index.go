@@ -3,8 +3,6 @@ package node
 import (
 	"net/http"
 
-	"github.com/fatih/structs"
-
 	"github.com/tonyzzzzzz/sspanel-go/models"
 	"github.com/tonyzzzzzz/sspanel-go/utils"
 
@@ -18,10 +16,9 @@ func GetInfo(c *gin.Context) {
 	user, _ := c.Get("user")
 	db.Where("type = 1").Where("node_class <= ?", user.(*models.User).Class).Where("sort != 9").Order("name").Find(&rawNodes)
 
-	var nodes []map[string]interface{}
+	var nodes []models.Node
 	for _, rawNode := range rawNodes {
-		m := structs.Map(rawNode)
-		m["Online"] = rawNode.GetOnlineUserCount()
+		nodes = append(nodes, rawNode.GetNode())
 	}
 	c.JSON(http.StatusOK, nodes)
 }

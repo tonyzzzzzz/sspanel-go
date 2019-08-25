@@ -16,16 +16,16 @@ func AuthMiddleWare() gin.HandlerFunc {
 		token = strings.Replace(token, "Bearer ", "", 1)
 		claims, err := utils.ParseToken(token)
 
-		var user models.User
-		db := utils.GetMySQLInstance().Database
-		db.First(&user, claims.UserID)
-
-		if token == "" || err != nil {
+		if token == "" || err != nil || claims == nil {
 			c.Request.Header.Set("Authorization", "")
 			c.JSON(http.StatusForbidden, gin.H{"msg": "Token Invalid"})
 			c.Abort()
 			return
 		}
+
+		var user models.User
+		db := utils.GetMySQLInstance().Database
+		db.First(&user, claims.UserID)
 
 		c.Set("user", &user)
 		c.Next()

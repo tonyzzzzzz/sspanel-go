@@ -26,7 +26,7 @@ func GetMySQLInstance() *SingletonMySQL {
 			panic(err)
 		}
 
-		db.LogMode(GetConfig().GetBool("enableLogger"))
+		db.LogMode(GetConfig().GetBool("server.debug"))
 		//db.AutoMigrate(&models.SsNode{})
 		//db.AutoMigrate(&models.User{})
 
